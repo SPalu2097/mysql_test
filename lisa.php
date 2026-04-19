@@ -8,7 +8,7 @@ include("config.php");//võtab info config failist
         $price = $_GET['price'];
         $image = $_GET['image'];
 
-        $paring ="INSERT INTO cars ( mark, model, engine, fuel, price, image) VALUES ( '".$mark."', '".$model."', '".$engine."', '".$fuel."', '".$price."', '".$image."')";
+        $paring ="INSERT INTO cr_simon ( mark, model, engine, fuel, price, image) VALUES ( '".$mark."', '".$model."', '".$engine."', '".$fuel."', '".$price."', '".$image."')";
 
         $valjund = mysqli_query($yhendus, $paring);//päringu saatmise käsk
         $tulemus = mysqli_affected_rows($yhendus);

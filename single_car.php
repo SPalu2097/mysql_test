@@ -49,7 +49,7 @@
     <!-- /menüü -->
 
 <?php
-    $paring = "SELECT * FROM cars WHERE id=5";
+    $paring = "SELECT * FROM cr_simon WHERE id=5";
     $valjund = mysqli_query($yhendus, $paring);
     $rida = mysqli_fetch_assoc($valjund);
 ?>

@@ -10,7 +10,7 @@
         $image = $_GET['image'];
 
         // $paring ="INSERT INTO cars ( mark, model, engine, fuel, price, image) VALUES ( '".$mark."', '".$model."', '".$engine."', '".$fuel."', '".$price."', '".$image."')";
-        $paring = "UPDATE cars
+        $paring = "UPDATE cr_simon
          SET mark = '".$mark."',
          model = '".$model."',
          engine = '".$engine."',
@@ -25,7 +25,7 @@
         }
     }
 
-        $paring = "SELECT * FROM cars WHERE id=".$_GET['id']."";
+        $paring = "SELECT * FROM cr_simon WHERE id=".$_GET['id']."";
         $valjund = mysqli_query($yhendus, $paring);
         $rida = mysqli_fetch_assoc($valjund);
         print_r($rida);

@@ -16,7 +16,7 @@
 <?php 
     include("config.php");
 
-    $paring = "SELECT * FROM cars ORDER BY id DESC LIMIT 8";
+    $paring = "SELECT * FROM cr_simon ORDER BY id DESC LIMIT 8";
     $valjund = mysqli_query($yhendus, $paring);
 
     while($rida = mysqli_fetch_assoc($valjund)){
