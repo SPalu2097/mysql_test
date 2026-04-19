@@ -129,3 +129,28 @@ Tehtud sammud:
 * Kontrollitud port (3306)
 
 MariaDB server on valmis kasutamiseks.
+
+ANDMEBAASI ETTEVALMISTUS
+MariaDB [(none)]> create database cr_simon;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> create user 'simon'@'localhost' identified by 'Passw0rd';
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [(none)]> grant all privileges on cr_simon.* to 'simon'@'localhost';
+
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [(none)]> flush privileges;
+Query OK, 0 rows affected (0.001 sec)
+
+mysql -u simon -p cr_simon <cr_simon.sql(enne seda peaks olema apache2 ja repo õiges kohas)
+kontrolli: mysql -u simon -p cr_simon -> show databases; -> use cr_simon; -> select * from cr_simon;
+Kuvatakse kogu andmebaasi sisu.
+
+Aga kui on tõrge siis kontrolli: php -version, kui ei ole siis: 
+sudo apt install php libapache2-mod-php
+sudo apt install php-mysql
+Ja igaksjuhuks veebserver ka kui ei ole sudo apt install apache2 -> sudo systemctl status apache2 (kui ei tööta siis systemctl enable apache2 && systemctl start apache2)
+
+Et see projekt ka õnnestuks siis sikuta repo enda /var/www/html kausta: sudo git clone <repo link>
