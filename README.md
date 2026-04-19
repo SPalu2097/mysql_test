@@ -154,3 +154,6 @@ sudo apt install php-mysql
 Ja igaksjuhuks veebserver ka kui ei ole sudo apt install apache2 -> sudo systemctl status apache2 (kui ei tööta siis systemctl enable apache2 && systemctl start apache2)
 
 Et see projekt ka õnnestuks siis sikuta repo enda /var/www/html kausta: sudo git clone <repo link>
+
+ANDMEBAASI PILT:
+<img width="1429" height="705" alt="image" src="https://github.com/user-attachments/assets/95e947b6-1beb-4639-8977-0f6da2a448c7" />
