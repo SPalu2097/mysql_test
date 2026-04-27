@@ -1,4 +1,10 @@
 <?php
+session_start();
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: login.php');
+    exit();
+}
+
 include("config.php");//võtab info config failist
     if(!empty($_GET)){
         $mark = $_GET['mark'];
