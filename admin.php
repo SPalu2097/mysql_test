@@ -1,3 +1,10 @@
+<?php
+session_start();
+if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
+    header('Location: login.php');
+    exit();
+}
+?>
 <h1>admin</h1>
 <a href="lisa.php">+ Lisa auto</a>
 <table border="1">
