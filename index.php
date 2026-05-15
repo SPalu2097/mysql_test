@@ -53,7 +53,7 @@
   <div class="row row-cols-1 row-cols-md-4 g-4">
 
 <?php
-    $paring = "SELECT * FROM cr_simon LIMIT 8";
+    $paring = "SELECT * FROM cars LIMIT 8";
     $valjund = mysqli_query($yhendus, $paring);
 
     while($rida = mysqli_fetch_assoc($valjund)){
@@ -68,7 +68,7 @@
             <p>Mootor: <?php echo $rida['engine']; ?></p>
             <p>Kütus: <?php echo $rida['fuel']; ?></p>
             <p>Hind: <?php echo $rida['price']; ?>€/päev</p>
-            <a href="single_car.php" class="btn btn-dark w-100">Rendi</a>
+            <a href="single_car.php?id=<?= $rida['id'] ?>" class="btn btn-dark w-100">Rendi</a>
         </div>
         </div>
     </div>

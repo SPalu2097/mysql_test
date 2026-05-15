@@ -1,82 +1,88 @@
-<?php include("config.php"); ?>
-
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CarRent</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-  </head>
-  <body>
-    <!-- menüü -->
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container">
-    <a class="navbar-brand" href="#">Navbar</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Link</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
-          </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-        </li>
-      </ul>
-      <form class="d-flex" role="search">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button class="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-    </div>
-</nav>
-    <!-- /menüü -->
-
 <?php
-    $paring = "SELECT * FROM cr_simon WHERE id=5";
-    $valjund = mysqli_query($yhendus, $paring);
-    $rida = mysqli_fetch_assoc($valjund);
+include("config.php");
+
+// kontroll ID
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    die("Auto ID puudub!");
+}
+
+$id = (int) $_GET['id'];
+
+// SQL päring
+$paring = $yhendus->prepare("SELECT * FROM cars WHERE id = ?");
+
+if (!$paring) {
+    die("SQL viga: " . $yhendus->error);
+}
+
+$paring->bind_param("i", $id);
+$paring->execute();
+
+$tulemus = $paring->get_result();
+
+if (!$tulemus || $tulemus->num_rows === 0) {
+    die("Autot ei leitud!");
+}
+
+$car = $tulemus->fetch_assoc();
 ?>
 
-    <!-- sisu -->
-<div class="container mt-4">
-  <div class="row">
-  <div class="col-sm-6">
-    <img src="https://loremflickr.com/400/250/<?php echo $rida['mark']; ?>" class="card-img-top" alt="audi">
-  </div>
-  <div class="col-sm-6">
+<!doctype html>
+<html lang="et">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title><?= htmlspecialchars($car['mark']) ?> rent</title>
 
-    <h2><?php echo $rida['mark']." ".$rida['model']; ?></h2>
-    <p>Mootor: <?php echo $rida['engine']; ?></p>
-    <p>Kütus: <?php echo $rida['fuel']; ?></p>
-    <p>Hind: <?php echo $rida['price']; ?>€/päev</p>
-    <a href="#" class="btn btn-dark w-100">Rendi auto</a>
-  </div>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
 
+<body class="bg-light">
 
+<div class="container mt-5">
 
+    <div class="row bg-white p-4 shadow rounded">
 
+        <!-- PILT -->
+        <div class="col-md-6">
+            <img 
+                src="<?= htmlspecialchars($car['image']) ?>" 
+                class="img-fluid rounded shadow"
+                alt="auto"
+            >
+        </div>
+
+        <!-- INFO -->
+        <div class="col-md-6">
+
+            <h1 class="mb-3">
+                <?= htmlspecialchars($car['mark'] . " " . $car['model']) ?>
+            </h1>
+
+            <p><b>Mootor:</b> <?= htmlspecialchars($car['engine']) ?></p>
+            <p><b>Kütus:</b> <?= htmlspecialchars($car['fuel']) ?></p>
+
+            <h3 class="text-success mb-4">
+                <?= htmlspecialchars($car['price']) ?> € / päev
+            </h3>
+
+            <form method="POST" action="rent.php">
+                <input type="hidden" name="car_id" value="<?= (int)$car['id'] ?>">
+
+                <button type="submit" class="btn btn-dark w-100">
+                    🚗 Rendi see auto
+                </button>
+            </form>
+
+            <a href="index.php" class="btn btn-outline-secondary w-100 mt-2">
+                ← Tagasi
+            </a>
+
+        </div>
 
     </div>
+
 </div>
-    <!-- /sisu -->
-   
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-  </body>
+
+</body>
 </html>

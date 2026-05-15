@@ -1,14 +1,38 @@
 <?php
 session_start();
+
+// Kontrollib, kas kasutaja on sisse loginud
 if (!isset($_SESSION['loggedin']) || $_SESSION['loggedin'] !== true) {
-    header('Location: login.php');
-    exit();
+    header('Location: login.php');
+    exit();
 }
-    include("config.php");
-        $paring = "DELETE FROM cr_simon WHERE id = ".$_GET['id']."";
-        $valjund = mysqli_query($yhendus, $paring);
-        //print_r($paring)
-        if($valjund){
-            header("Location:admin.php");
-        }
+
+include("config.php");
+
+// Kontrollib, kas ID on olemas
+if (isset($_GET['id'])) {
+
+    $id = intval($_GET['id']);
+
+    // Prepared statement
+    $paring = $yhendus->prepare("
+        DELETE FROM cars 
+        WHERE id = ?
+    ");
+
+    $paring->bind_param("i", $id);
+
+    // Käivitab päringu
+    if ($paring->execute()) {
+
+        header("Location: admin.php");
+        exit();
+
+    } else {
+        echo "Kirje kustutamine ebaõnnestus!";
+    }
+
+} else {
+    echo "ID puudub!";
+}
 ?>
